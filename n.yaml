@@ -1,0 +1,17 @@
+# BLAZHIN self-healing VPN — auto-failover, managed server-side
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: warning
+dns:
+  enable: true
+  nameserver: [8.8.8.8, 1.1.1.1]
+proxies:
+  - {name: TESLA-443, type: vless, server: 82.22.35.98, port: 443, uuid: b8d1dbba-8581-4439-ab7b-11543bef3eec, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: www.tesla.com, client-fingerprint: chrome, reality-opts: {public-key: QQ-riMkxw7WdSUSkpNWHAVgfpTSSOXNAYQqosnTeHAo, short-id: "22044dbdf6c69329"}}
+  - {name: SS2022, type: ss, server: 82.22.35.98, port: 24001, cipher: 2022-blake3-aes-128-gcm, password: W19Il6MiIgB81vKufauFXw==, udp: true}
+  - {name: ICLOUD-8444, type: vless, server: 82.22.35.98, port: 8444, uuid: b8d1dbba-8581-4439-ab7b-11543bef3eec, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: gateway.icloud.com, client-fingerprint: chrome, reality-opts: {public-key: zQ3lQ5I1D4rlhlaL4MgfZJ8ifqiUUfdSbrspUs4WgzE, short-id: "a53651eb5e83455a"}}
+proxy-groups:
+  - {name: BLAZHIN, type: select, proxies: [AUTO, TESLA-443, SS2022, ICLOUD-8444]}
+  - {name: AUTO, type: url-test, proxies: [TESLA-443, SS2022, ICLOUD-8444], url: "http://www.gstatic.com/generate_204", interval: 60, tolerance: 80}
+rules:
+  - MATCH,BLAZHIN
