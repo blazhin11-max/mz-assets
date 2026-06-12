@@ -1,22 +1,14 @@
+# BLAZHIN single-server (TESLA) for TV
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: warning
+dns:
+  enable: true
+  nameserver: [8.8.8.8, 1.1.1.1]
 proxies:
-  - name: TESLA-443
-    type: vless
-    server: 82.22.35.98
-    port: 443
-    uuid: b8d1dbba-8581-4439-ab7b-11543bef3eec
-    network: tcp
-    tls: true
-    udp: true
-    flow: xtls-rprx-vision
-    servername: www.tesla.com
-    client-fingerprint: chrome
-    reality-opts:
-      public-key: QQ-riMkxw7WdSUSkpNWHAVgfpTSSOXNAYQqosnTeHAo
-      short-id: "22044dbdf6c69329"
+  - {name: TESLA-443, type: vless, server: 82.22.35.98, port: 443, uuid: b8d1dbba-8581-4439-ab7b-11543bef3eec, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: www.tesla.com, client-fingerprint: chrome, reality-opts: {public-key: QQ-riMkxw7WdSUSkpNWHAVgfpTSSOXNAYQqosnTeHAo, short-id: "22044dbdf6c69329"}}
 proxy-groups:
-  - name: AUTO
-    type: select
-    proxies:
-      - TESLA-443
+  - {name: BLAZHIN, type: select, proxies: [TESLA-443]}
 rules:
-  - MATCH,AUTO
+  - MATCH,BLAZHIN
